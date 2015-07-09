@@ -8,6 +8,11 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\ProvinceSearch;
+use app\models\Province;
+
+use app\models\HospitalAll;
+use app\models\HospitalAllSearch;
 
 class SiteController extends Controller
 {
@@ -91,6 +96,35 @@ class SiteController extends Controller
 
     public function actionAbout()
     {
+        
         return $this->render('about');
+    }
+    public function actionTest(){
+
+        $searchModel = new ProvinceSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        return $this->render('test',[
+            'searchModel' => $searchModel,
+             'dataProvider' => $dataProvider
+        ]);
+    }
+
+       public function actionIndex2($id=5)
+    {
+
+        $requestItemSearch = new HospitalAllSearch();
+        $requestItemDataprovider = $requestItemSearch->search(Yii::$app->request->queryParams);
+        return $this->render('index2',[
+             'requestId'=>$id,
+             'searchModel' => $requestItemSearch,
+             'dataProvider' => $requestItemDataprovider
+            ]);
+    }
+        protected function findModel($id) {
+        if (($model = Request::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 }
